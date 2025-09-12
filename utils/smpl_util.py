@@ -1008,7 +1008,8 @@ def rescale_smpl(fitted_path, scale=100, translate=(0, 0, 0)):
 class SMPLX():
 
     def __init__(self):
-
+        for file in os.listdir("./"):
+            print("added", file)
         self.current_dir = "smpl_related"  # new smplx file in ECON folder
 
         self.smpl_verts_path = osp.join(self.current_dir,
