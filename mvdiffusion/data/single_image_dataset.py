@@ -134,7 +134,7 @@ class SingleImageDataset(Dataset):
             self.normal_text_embeds = normal_prompt_embedding
             self.color_text_embeds = color_prompt_embedding
         except:
-            self.color_text_embeds = torch.load(f'{prompt_embeds_path}/embeds.pt')
+            self.color_text_embeds = torch.load(f'{prompt_embeds_path}/normal_embeds.pt')
             self.normal_text_embeds = None
 
     def __len__(self):
