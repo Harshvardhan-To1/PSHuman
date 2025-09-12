@@ -127,15 +127,14 @@ class SingleImageDataset(Dataset):
         self.all_faces = self.all_faces[:num_validation_samples]
             
         ic(len(self.all_images))
-        
-        try:
-            normal_prompt_embedding = torch.load(f'{prompt_embeds_path}/normal_embeds.pt')
-            color_prompt_embedding = torch.load(f'{prompt_embeds_path}/clr_embeds.pt')
-            self.normal_text_embeds = normal_prompt_embedding
-            self.color_text_embeds = color_prompt_embedding
-        except:
-            self.color_text_embeds = torch.load("fixed_prompt_embeds_7view/normal_embeds.pt")
-            self.normal_text_embeds = None
+
+        for file in os.listdir("./"):
+            print("FILES FOUND", file)
+            
+        normal_prompt_embedding = torch.load(f'{prompt_embeds_path}/normal_embeds.pt')
+        color_prompt_embedding = torch.load(f'{prompt_embeds_path}/clr_embeds.pt')
+        self.normal_text_embeds = normal_prompt_embedding
+        self.color_text_embeds = color_prompt_embedding
 
     def __len__(self):
         return len(self.all_images)
