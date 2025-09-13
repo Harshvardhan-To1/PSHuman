@@ -114,16 +114,16 @@ def process_image(img_file,
 
     # detection for bbox
     # detection for bbox
+    # detection for bbox
     detector = detection.maskrcnn_resnet50_fpn(pretrained=True)
     detector.eval()
     
-    # Force GPU inference
-    detector = detector.cuda()
+    # Ensure detector runs on CPU to avoid device mismatch
+    detector = detector.to('cpu')
     input_tensor = torch.from_numpy(img_for_crop).permute(2, 0, 1) / 255.
-    input_tensor = input_tensor.cuda()
+    input_tensor = input_tensor.to('cpu')  # Ensure input is also on CPU
     
-    with torch.no_grad():
-        predictions = detector([input_tensor])[0]
+    predictions = detector([input_tensor])[0]
     human_ids = torch.logical_and(
         predictions["labels"] == 1,
         predictions["scores"] == predictions["scores"].max()).nonzero().squeeze(1)
