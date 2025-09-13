@@ -113,10 +113,17 @@ def process_image(img_file,
                                   flags=cv2.INTER_CUBIC)
 
     # detection for bbox
+    # detection for bbox
     detector = detection.maskrcnn_resnet50_fpn(pretrained=True)
     detector.eval()
-    predictions = detector(
-        [torch.from_numpy(img_for_crop).permute(2, 0, 1) / 255.])[0]
+    
+    # Force GPU inference
+    detector = detector.cuda()
+    input_tensor = torch.from_numpy(img_for_crop).permute(2, 0, 1) / 255.
+    input_tensor = input_tensor.cuda()
+    
+    with torch.no_grad():
+        predictions = detector([input_tensor])[0]
     human_ids = torch.logical_and(
         predictions["labels"] == 1,
         predictions["scores"] == predictions["scores"].max()).nonzero().squeeze(1)
